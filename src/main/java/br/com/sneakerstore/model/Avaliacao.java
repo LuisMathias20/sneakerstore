@@ -8,12 +8,16 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import lombok.Getter;
+import lombok.Setter;
+
 @Entity
 @Table(name="tab_avaliacao")
+@Getter
+@Setter
 public class Avaliacao {
 
 	@Id
@@ -37,7 +41,6 @@ public class Avaliacao {
 	private Integer dislikes;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="produto_id")
 	private Produto produto;
 
 }

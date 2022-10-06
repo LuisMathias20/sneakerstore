@@ -11,8 +11,14 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import br.com.sneakerstore.dto.MarcaDto;
+import lombok.Getter;
+import lombok.Setter;
+
 @Entity
 @Table(name="tab_marca")
+@Getter
+@Setter
 public class Marca {
 
 	@Id
@@ -23,6 +29,17 @@ public class Marca {
 	@Column(name="mar_nome")
 	private String nome;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "marca")
-	private List<Produto> produtos;
+	/*@OneToMany(fetch = FetchType.LAZY, mappedBy = "marca")
+	private List<Produto> produtos;*/
+	
+	public Marca converterDoDto(MarcaDto marcaDto) {
+		Marca marcaModel = new Marca();
+		
+		if(marcaDto.getId() != null) {
+			marcaModel.setId(marcaDto.getId());
+		}
+		marcaModel.setNome(marcaDto.getNome());
+		
+		return marcaModel;
+	}
 }

@@ -1,6 +1,6 @@
 package br.com.sneakerstore.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -14,8 +14,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import br.com.sneakerstore.dto.ProdutoDto;
+import lombok.Getter;
+import lombok.Setter;
+
 @Entity
 @Table(name="tab_produto")
+@Getter
+@Setter
 public class Produto {
 
 	@Id
@@ -36,10 +42,10 @@ public class Produto {
 	private String identificador;
 	
 	@Column(name="pro_data_cadastro")
-	private LocalDate dataCadastro;
+	private LocalDateTime dataCadastro;
 	
 	@Column(name="pro_data_atualizacao")
-	private LocalDate dataAtualizacao;
+	private LocalDateTime dataAtualizacao;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "produto")
 	private List<ProdutoTamanho> produtoTamanho;
@@ -50,5 +56,22 @@ public class Produto {
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "produto")
 	private List<Avaliacao> avaliacao;
+	
+	public Produto converterDoDto(ProdutoDto produtoDto) {
+		Produto produtoModel = new Produto();
+		
+		if(produtoDto.getId() != null) {
+			produtoModel.setId(produtoDto.getId());
+		}
+		produtoModel.setNome(produtoDto.getNome());
+		produtoModel.setDescricao(produtoDto.getDescricao());
+		produtoModel.setPreco(produtoDto.getPreco());
+		produtoModel.setIdentificador(produtoDto.getIdentificador());
+		produtoModel.setDataCadastro(LocalDateTime.now());
+		Marca marca = new Marca();
+		produtoModel.setMarca(marca.converterDoDto(produtoDto.getMarca()));
+		
+		return produtoModel;
+	}
 	
 }
